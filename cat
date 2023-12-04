@@ -1,0 +1,56 @@
+namespace classCat
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Cat domesticCat = new Cat("Стецько", Gender.чоловік);
+            Console.WriteLine($"Кличка - {domesticCat.Name}, стать - {domesticCat.Gender}, енергія - {domesticCat.Energy}");
+            domesticCat.Jump();
+            Console.WriteLine($" після стрибка - {domesticCat.Energy}");
+            domesticCat.Sleep();
+            Console.WriteLine($" після сну - {domesticCat.Energy}");
+        }
+    }
+    public enum Gender
+    {
+        чоловік,
+        жінка
+    }
+    public class Cat
+    {
+        public string Name { get; }
+        public Gender Gender { get; }
+        private double _energy;
+        public double Energy
+        {
+            get => _energy;
+            private set
+            {
+                if (value < MinEnergy)
+                {
+                    throw new InvalidOperationException("Замало енергії");
+                }
+                _energy = Math.Min(value, MaxEnergy);
+            }
+        }
+        public static readonly double MaxEnergy = 100;
+        public static readonly double MinEnergy = 0;
+        public static readonly double SleepEnergyGain = 100;
+        public static readonly double JumpEnergyDrain = 1;
+        public Cat(string n, Gender g)
+        {
+            Name = n;
+            Gender = g;
+            Energy = MaxEnergy;
+        }
+        public void Jump()
+        {
+            Energy -= JumpEnergyDrain;
+        }
+        public void Sleep()
+        {
+            Energy += SleepEnergyGain;
+        }
+    }
+}
